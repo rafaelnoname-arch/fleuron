@@ -1,0 +1,33 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main # Déclenche le déploiement à chaque push sur main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+          cache: 'npm'
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Build du projet
+        run: npm run build
+
+      - name: Déploiement sur Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Utilise le fichier wrangler généré par le build de Vinext (indiqué dans ton README)
+          command: deploy --config dist/server/wrangler.json
