@@ -1,5 +1,5 @@
 {
-  "framework": "vite",
-  "buildCommand": "pnpm run build",
-  "outputDirectory": ".output"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nitro",
+  "buildCommand": "pnpm run build"
 }
