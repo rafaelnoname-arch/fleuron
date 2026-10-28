@@ -124,3 +124,10 @@ The portable build runs Vinext directly without a host `timeout` command. The ma
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)
 - [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+
+
+## Vercel deployment note
+
+This checkout is configured to build through Vite + Vinext + Nitro for Vercel. The build command is `pnpm run build`, and Nitro emits the deployment output to `.output`.
+
+**Important:** the original database helper in `db/index.ts` imports `cloudflare:workers` and uses Cloudflare D1. Removing the Cloudflare Vite plugin fixes the hosting-target mismatch, but it does not migrate D1/R2 to Vercel. Database-backed API routes will still require a compatible database/storage setup or a separate Cloudflare deployment. Configure the required environment variables and services before relying on those routes in production.
